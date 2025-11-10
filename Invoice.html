@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shiv Shakti Travels - Travel Invoice</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .invoice-container {
+      max-width: 850px;
+      margin: auto;
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+      color: #333;
+    }
+
+    /* Header Section */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: #007bff;
+      letter-spacing: 1px;
+    }
+
+    .header p {
+      font-size: 18px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Invoice Info Section */
+    .invoice-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 25px;
+    }
+
+    .invoice-info div {
+      width: 48%;
+    }
+
+    label {
+      font-weight: bold;
+      color: #444;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      resize: none;
+      color: #333;
+      background-color: #fafafa;
+    }
+
+    textarea {
+      height: 70px;
+    }
+
+    /* Table Design */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      font-size: 15px;
+    }
+
+    td[contenteditable="true"] {
+      background-color: #fefefe;
+      cursor: text;
+    }
+
+    td[contenteditable="true"]:focus {
+      outline: 2px solid #007bff;
+      background-color: #eef6ff;
+    }
+
+    /* Total Section */
+    .total {
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 25px;
+      color: #222;
+    }
+
+    /* Buttons */
+    .btn-container {
+      text-align: center;
+      margin-top: 35px;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .footer hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-container" id="invoice">
+    <div class="header">
+      <h1>Shiv Shakti Travels</h1>
+      <p>Travel Invoice</p>
+    </div>
+
+    <div class="invoice-info">
+      <div>
+        <label>Invoice No:</label>
+        <!-- <input type="text" value="TRV-2025-001" /> -->
+        <div contenteditable="true">TRV-2025-001</div>
+      </div>
+      <div>
+        <label>Date:</label>
+        <input type="date" value="2025-11-10" />
+      </div>
+    </div>
+
+    <div class="invoice-info">
+      <div>
+        <label>From (Your Company):</label>
+		<div contenteditable="true">Shiv Shakti Travels Vadodara, Gujarat</div>
+        <!-- <textarea>Shiv Shakti Travels -->
+<!-- Vadodara, Gujarat</textarea> -->
+      </div>
+      <div>
+        <label>To (Client Name & Address):</label>
+				<div contenteditable="true">Client Name Ahmedabad, Gujarat</div>
+        <!-- <textarea>Client Name -->
+<!-- Ahmedabad, Gujarat</textarea> -->
+      </div>
+    </div>
+
+    <table id="invoiceTable">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Date</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td contenteditable="true">Travel Service</td>
+          <td contenteditable="true">Vadodara</td>
+          <td contenteditable="true">Ahmedabad</td>
+          <td contenteditable="true">2025-11-10</td>
+          <td contenteditable="true">3000</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Return Travel</td>
+          <td contenteditable="true">Ahmedabad</td>
+          <td contenteditable="true">Vadodara</td>
+          <td contenteditable="true">2025-11-10</td>
+          <td contenteditable="true">3000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total" id="totalAmount">Total Amount: ₹6000</div>
+
+    <div class="footer">
+      <hr>
+      <p>Thank you for choosing <strong>Shiv Shakti Travels</strong>. Have a safe and pleasant journey!</p>
+    </div>
+  </div>
+
+  <div class="btn-container">
+    <button onclick="calculateTotal()">Update Total</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+  </div>
+
+  <script>
+    function calculateTotal() {
+      let total = 0;
+      const rows = document.querySelectorAll("#invoiceTable tbody tr");
+      rows.forEach(row => {
+        const amount = parseFloat(row.cells[4].innerText) || 0;
+        total += amount;
+      });
+      document.getElementById("totalAmount").innerText = "Total Amount: ₹" + total;
+    }
+
+    async function downloadPDF() {
+      await calculateTotal();
+      const invoice = document.getElementById("invoice");
+      const canvas = await html2canvas(invoice, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = (canvas.height * pageWidth) / canvas.width;
+      pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
+      pdf.save("ShivShaktiTravels-Invoice.pdf");
+    }
+  </script>
+</body>
+</html>
